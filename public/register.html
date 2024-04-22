@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>register</title>
+  <link rel="stylesheet" href="register.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <div class="wrapper">
+    <form id="registerForm" action="">
+      <h1>Register</h1>
+      <div class="input-box">
+        <input id="username" type="text" placeholder="Username" required>
+        <i class='bx bxs-user'></i>
+      </div>
+      <div class="input-box">
+        <input id="email" type="email" placeholder="Email id" required>
+        <i class='bx bxs-envelope'></i>
+      </div>
+      <div class="input-box">
+        <input id="password" type="password" placeholder="Password" required>
+        <i class='bx bxs-lock-alt'></i>
+      </div>
+      <div class="input-box">
+        <input id="confirmPassword" type="password" placeholder="Confirm Password" required>
+        <i class='bx bxs-lock-alt'></i>
+      </div>
+      
+      <button type="submit" class="btn">Register</button>
+      <div class="register-link">
+        <p>Already have an account? <a href="login.html">Login</a></p>
+      </div>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('registerForm');
+
+    form.addEventListener('submit', async(event) => {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Get the values of username, email, password, and confirmPassword fields
+        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        if(password.length<8){
+            alert('Password must be at least 8 characters');
+            return;
+        }
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        // Perform validation
+        if (password !== confirmPassword) {
+            alert('Passwords do not match');
+            return;
+        }
+
+        try {
+            const response = await axios.post("http://localhost:5000/register", { email, username, password });
+            if (response.data.message === 'success') {
+                window.location.href = "login.html";
+                alert("Success");
+            }
+            else {
+                alert("User already exists");
+            }
+            
+        } catch (error) {
+            console.error('Error occurred:', error);
+        }
+    });
+});
+</script>
+
+
+</body>
+</html>
